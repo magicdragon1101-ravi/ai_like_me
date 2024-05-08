@@ -19,3 +19,12 @@ for file in onlyfiles:
     data[i] = loader.load()
     i += 1
 
+# importing the particular text splitter, in this case we would use TokenTextSplitter
+from langchain.text_splitter import TokenTextSplitter
+
+text_splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=25)
+# A dictionary which contains all the post split docs.
+texts = {}
+for i in range(len(data)):
+# The key of texts dictionary is the title of each file
+    texts[data[i][0].metadata['source']] = text_splitter.split_documents(data[i])
