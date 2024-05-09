@@ -26,5 +26,20 @@ text_splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=25)
 # A dictionary which contains all the post split docs.
 texts = {}
 for i in range(len(data)):
-# The key of texts dictionary is the title of each file
+    # The key of texts dictionary is the title of each file
     texts[data[i][0].metadata['source']] = text_splitter.split_documents(data[i])
+
+from langchain_community.vectorstores import Chroma
+from langchain_openai.embeddings import OpenAIEmbeddings
+
+for i in range(len(texts)):
+    vectordb = Chroma.from_documents(
+        # Takes in a list of documents
+        text_splitter.split_documents(data[i]),
+        # Embedding function, we are using OpenAI default
+        embedding=OpenAIEmbeddings(api_key='your_open_ai_key'),
+        # Specify the directory where you want these
+        persist_directory='./LLM_train_embedding/Doc'
+    )
+    # Pushes these into the directory
+    vectordb.persist()
