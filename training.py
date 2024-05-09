@@ -1,3 +1,4 @@
+import os
 from os import listdir
 from os.path import isfile, join
 
@@ -31,13 +32,20 @@ for i in range(len(data)):
 
 from langchain_community.vectorstores import Chroma
 from langchain_openai.embeddings import OpenAIEmbeddings
+from dotenv import load_dotenv
+from pathlib import Path
+
+dotenv_path = Path("environment_variables.env")
+load_dotenv(dotenv_path=dotenv_path)
+
+openai_api_key = os.getenv("API_KEY")
 
 for i in range(len(texts)):
     vectordb = Chroma.from_documents(
         # Takes in a list of documents
         text_splitter.split_documents(data[i]),
         # Embedding function, we are using OpenAI default
-        embedding=OpenAIEmbeddings(api_key='your_open_ai_key'),
+        embedding=OpenAIEmbeddings(api_key=openai_api_key),
         # Specify the directory where you want these
         persist_directory='./LLM_train_embedding/Doc'
     )

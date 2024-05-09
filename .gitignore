@@ -1,1 +1,3 @@
 .idea/*
+environment_variables.env
+LLM_train_embedding/
