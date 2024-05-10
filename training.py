@@ -51,3 +51,13 @@ for i in range(len(texts)):
     )
     # Pushes these into the directory
     vectordb.persist()
+
+# The built-in ChromaDb LangChain method for vector store-based retrieval
+# need two arguments, the algorithm to use and search kwargs, which specify
+# the parameters for each algorithm. k tells amount of documents to return etc
+
+# Defines the retriever
+retriever = vectordb.as_retriever(search_type='mmr', search_kwargs ={'k':1})
+
+# Gets the document for the retriever
+retriever.get_relevant_documents('What is a Sankey?')
