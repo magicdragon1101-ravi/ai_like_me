@@ -80,12 +80,14 @@ for i in range(len(data)):
 retriever.invoke("Mon endroit préféré")
 retriever.invoke("Un ŒIL dans l'espace")
 retriever.invoke("L'Incident")
+retriever.invoke("La Gentiane de Victorin")
+retriever.invoke("Questions CCQ:")
 
 from operator import itemgetter
 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough, RunnableParallel
 from langchain_openai import ChatOpenAI
 
 # This is the prompt I used
@@ -106,7 +108,7 @@ model = ChatOpenAI(api_key=openai_api_key)
 # Using LangCHain LCEL to supply the prompt and generate output
 chain = (
     {
-        "context":itemgetter("topic") | retriever,
+        "context": itemgetter("topic") | retriever,
         "topic": itemgetter("topic"),
 
     }
@@ -115,6 +117,6 @@ chain = (
     | StrOutputParser()
 )
 # running the Chain
-docs = chain.invoke({"topic": "École"})
+docs = chain.invoke({"topic": "Description de l'Expansion du monde industriel"})
 
 print(docs)
